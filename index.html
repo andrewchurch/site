@@ -7,13 +7,43 @@
     <title>Andrew, Web Guy</title>
   </head>
   <body>
-    <div class="grid grid-cols-2">
-      <div class="bg-slate-500 h-screen"></div>
-      <div class="bg-stone-50 h-screen flex">
-        <div class="bg-sky-500 m-auto">
-          Me
+    <div class="flex flex-col h-screen md:flex-row">
+      
+      <!-- Bio -->
+      <div class="w-screen bg-stone-50 flex md:order-last md:h-screen md:w-1/2">
+        <div class="m-auto p-8">
+          <img class="rounded-full w-20 h-20 ring-2 ring-indigo-400" src="/src/assets/headshot-cropped.jpg">
+          <div class="mt-1">
+            <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight font-sans">
+              Andrew Church
+            </h1>
+            <p class="text-base text-slate-700">
+              Full Stack Developer. Development Manager. Web Problem Solver.
+            </p>
+            <ul class="flex items-center space-x-2 mt-2 text-xs text-indigo-600">
+              <li>
+                <a href="https://www.linkedin.com/in/andrewthewebguy/" class="transition-colors hover:text-indigo-400">
+                  LinkedIn
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/andrewchurch" class="transition-colors hover:text-indigo-400">
+                  GitHub
+                </a>
+              </li>
+              <li>
+                <a href="mailto:andrewchurch@gmail.com" class="transition-colors hover:text-indigo-400">
+                  andrewchurch@gmail.com
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
+
+      <!-- Arcade -->
+      <div class="w-screen bg-slate-500 grow md:h-screen md:w-1/2"></div>
+
     </div>
     <script type="module" src="/main.js"></script>
   </body>
