@@ -9,8 +9,8 @@
   <body>
     <div class="flex flex-col h-screen md:flex-row">
       
-      <!-- Bio -->
-      <div class="w-screen bg-stone-50 flex md:order-last md:h-screen md:w-1/2">
+      <!-- Colophon -->
+      <div id="colophon" class="w-screen bg-stone-50 flex md:order-last md:h-screen md:w-1/2">
         <div class="m-auto p-8">
           <img class="rounded-full w-20 h-20 ring-2 ring-indigo-400" src="/src/assets/headshot-cropped.jpg">
           <div class="mt-1">
@@ -42,22 +42,20 @@
       </div>
 
       <!-- Portfolio
-      <div class="w-screen bg-cyan-100 flex md:order-last md:h-screen md:w-1/2">
-      
+      <div id="portfolio" class="w-screen bg-cyan-100 flex md:order-last md:h-screen md:w-1/2">
+        <div class="p-8 w-full">
+          <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight font-sans">
+            Portfolio
+          </h2>
+
+        </div>
       </div> -->
 
       <!-- Arcade -->
-      <div class="arcade w-screen bg-slate-500 grow text-zinc-100 md:h-screen md:w-1/2 flex">
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" 
-          id="player"
-          class="w-6 h-6 m-auto -rotate-90 transition-transform origin-center duration-500">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
-        </svg>
-      </div>
+      <div id="arcade" class="arcade w-screen bg-slate-500 grow text-zinc-100 md:h-screen md:w-1/2 flex"></div>
 
     </div>
 
-    <script type="module" src="/main.js"></script>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
