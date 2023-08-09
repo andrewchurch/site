@@ -41,7 +41,7 @@ const projects = [{
         label: 'Link 1',
         href: 'www.google.com',
     }, {
-        label: 'Link 2',
+        label: 'Link 3',
         href: 'foobar.com',
     }],
     summary: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam eligendi quos hic laboriosam voluptatum non, maiores quam incidunt sequi, porro autem quia facilis tenetur repellendus! Excepturi reiciendis autem iure ab.',
