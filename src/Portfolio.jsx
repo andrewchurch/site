@@ -51,8 +51,8 @@ function ProjectList() {
         {project.photos.map((photo,i) => 
             <img key={i} className="w-full aspect-video" src={photo.src} alt={photo.alt} />
         )}
-        <h3 className="mt-4 text-2xl font-semibold text-slate-800 tracking-tight">{project.name}</h3>
-        <ul className="flex space-x-2 text-xs text-indigo-600">
+        <h3 className="mt-4 text-2xl font-semibold text-slate-800 tracking-tight leading-tight">{project.name}</h3>
+        <ul className="mt-1 flex space-x-2 text-xs text-indigo-600">
             {project.links.map((link,i) => 
                 <li key={i}>
                     <a href={link.href}>{link.label}</a>
