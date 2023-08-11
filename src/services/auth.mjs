@@ -17,7 +17,7 @@ function getAuth() {
 
 export function loginUser(username, password, onSuccess, onFailure) {
     const auth = getAuth();
-    const rememberMe = true;
+    const rememberMe = false;
 
     auth
         .login(username, password, rememberMe)

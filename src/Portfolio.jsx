@@ -92,7 +92,7 @@ function PortfolioAuthentication({onLogin}) {
     }
 
     function onFailure(error) {
-        setError('That didn\'t work. Try again or contact me.')
+        setError('Nope. Try again or contact me.')
         //console.log(`Failed :( ${JSON.stringify(error)}`);
     }
 
@@ -114,7 +114,7 @@ function PortfolioAuthentication({onLogin}) {
                 {error ? 
                     <p className="text-base text-red-700">{error}</p>
                     : 
-                    <p className="text-base text-slate-700">Enter password to view work samples.</p>
+                    <p className="text-base text-slate-700">Enter password to view some work.</p>
                 }
                 <form onSubmit={handleSubmit} className="mt-2 flex gap-2">
                     <input type="password" onFocus={() => setError(false)} required placeholder="Password here" ref={passwordRef} className="rounded-md border-0 px-3 py-1.5 text-slate-700 shadow-sm ring-1 ring-inset ring-gray-300 leading-6 placeholder:text-gray-400" />
