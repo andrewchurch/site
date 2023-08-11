@@ -12,7 +12,7 @@ function Player({ style }) {
     )
 }
 
-function Arcade() {
+export default function Arcade() {
     const [playerRotation, setPlayerRotation] = useState(0);
     
     let playerStyle = {
@@ -33,5 +33,3 @@ function Arcade() {
         />
     )
 }
-
-export default Arcade
