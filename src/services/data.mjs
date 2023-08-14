@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, getDocs, collection } from 'firebase/firestore/lite';
+import { getFirestore, collection, query, where, orderBy, getDocs } from 'firebase/firestore/lite';
 
 let db = false;
 
@@ -22,8 +22,12 @@ function getDb() {
 }
 
 export async function getAllProjects() {
-    const collection_name = 'portfolio';
-    const doc_refs = await getDocs(collection(getDb(), collection_name));
+    const q = query(
+        collection(getDb(), 'portfolio'),
+        where('published', '==', true),
+        orderBy('order')
+    );
+    const doc_refs = await getDocs(q);
     let res = [];
     doc_refs.forEach(project => {
         res.push({
