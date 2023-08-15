@@ -12,38 +12,48 @@ function PortfolioListItem(props) {
             )}
             <div className="px-8">
                 <h3 className="mt-4 text-2xl font-semibold text-slate-800 tracking-tight leading-tight">{project.name}</h3>
-                <ul className="mt-1 flex space-x-2 text-xs text-indigo-600">
-                    {project.links.map((link,i) => 
-                        <li key={i}>
-                            <a href={link.href}>{link.label}</a>
-                        </li>
-                    )}
-                </ul>
-                <div className="mt-2 text-base text-slate-700">
-                    {project.summary}
-                </div>
-                <div className="mt-4 flex gap-x-5">
-                    <div className="border-t-2 pt-4 w-1/2 flex gap-x-3">
-                        <h4 className="font-bold text-sm text-slate-800">Tech</h4>
-                        <ul className="space-y-2 mt-0.5 text-xs text-slate-500">
-                            {project.tech.map((tech,i) => 
-                                <li key={i}>
-                                    {tech}
-                                </li>
-                            )}
-                        </ul>
+                {project.links &&
+                    <ul className="mt-1 flex space-x-2 text-xs text-indigo-600">
+                        {project.links.map((link,i) => 
+                            <li key={i}>
+                                <a href={link.href}>{link.label}</a>
+                            </li>
+                        )}
+                    </ul>
+                }
+                {project.summary &&
+                    <div className="mt-2 text-base text-slate-700">
+                        {project.summary}
                     </div>
-                    <div className="border-t-2 pt-4 w-1/2 flex gap-x-3">
-                        <h4 className="font-bold text-sm text-slate-800">Role(s)</h4>
-                        <ul className="space-y-2 mt-0.5 text-xs text-slate-500">
-                            {project.roles.map((role,i) => 
-                                <li key={i}>
-                                    {role}
-                                </li>
-                            )}
-                        </ul>
+                }
+                {(project.tech || project.roles) &&
+                    <div className="mt-4 flex gap-x-5">
+                        {project.tech &&
+                            <div className="border-t-2 pt-4 w-1/2 flex gap-x-3">
+                                <h4 className="font-bold text-sm text-slate-800">Tech</h4>
+                                <ul className="space-y-2 mt-0.5 text-xs text-slate-500">
+                                    {project.tech.map((tech,i) => 
+                                        <li key={i}>
+                                            {tech}
+                                        </li>
+                                    )}
+                                </ul>
+                            </div>
+                        }
+                        {project.roles && 
+                            <div className="border-t-2 pt-4 w-1/2 flex gap-x-3">
+                                <h4 className="font-bold text-sm text-slate-800">Role(s)</h4>
+                                <ul className="space-y-2 mt-0.5 text-xs text-slate-500">
+                                    {project.roles.map((role,i) => 
+                                        <li key={i}>
+                                            {role}
+                                        </li>
+                                    )}
+                                </ul>
+                            </div>
+                        }
                     </div>
-                </div>
+                }
             </div>
         </div>  
     )
