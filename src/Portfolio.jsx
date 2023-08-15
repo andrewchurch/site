@@ -13,10 +13,10 @@ function PortfolioListItem(props) {
             <div className="px-8">
                 <h3 className="mt-4 text-2xl font-semibold text-slate-800 tracking-tight leading-tight">{project.name}</h3>
                 {project.links &&
-                    <ul className="mt-1 flex space-x-2 text-xs text-indigo-600">
+                    <ul className="text-xs text-indigo-600">
                         {project.links.map((link,i) => 
-                            <li key={i}>
-                                <a href={link.href}>{link.label}</a>
+                            <li key={i} className="mt-1">
+                                <a href={link.href} className="after:content-['_↗'] transition-colors hover:text-indigo-400">{link.label}</a>
                             </li>
                         )}
                     </ul>
