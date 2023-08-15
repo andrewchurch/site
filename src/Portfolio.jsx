@@ -32,7 +32,7 @@ function PortfolioListItem(props) {
                             <div className="border-t-2 pt-4 w-1/2 flex gap-x-3">
                                 <h4 className="font-bold text-sm text-slate-800">Tech</h4>
                                 <ul className="space-y-2 mt-0.5 text-xs text-slate-500">
-                                    {project.tech.map((tech,i) => 
+                                    {project.tech.sort().map((tech,i) => 
                                         <li key={i}>
                                             {tech}
                                         </li>
@@ -44,7 +44,7 @@ function PortfolioListItem(props) {
                             <div className="border-t-2 pt-4 w-1/2 flex gap-x-3">
                                 <h4 className="font-bold text-sm text-slate-800">Role(s)</h4>
                                 <ul className="space-y-2 mt-0.5 text-xs text-slate-500">
-                                    {project.roles.map((role,i) => 
+                                    {project.roles.sort().map((role,i) => 
                                         <li key={i}>
                                             {role}
                                         </li>
