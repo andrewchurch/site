@@ -1,6 +1,0 @@
-[build]
-  base    = ""
-  publish = "dist"
-  command = "npm run build"
-  [build.processing]
-    skip_processing = true
