@@ -6,7 +6,7 @@ function PortfolioListItem(props) {
     const { project } = props;
 
     return (
-        <div className="my-16 first:my-8">
+        <div className="mt-16 first:mt-8">
             {project.images && project.images.map((image,i) => 
                 <img key={i} className="w-full aspect-video object-cover object-top shadow" src={image.src} alt={image.alt} />
             )}
@@ -77,13 +77,13 @@ function PortfolioList() {
 
     return (
         <>
-            <div className="px-8 pt-12">
+            <div className="px-8 pt-16">
                 <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Selected Projects</h2>
                 { isLoading && 
                     <p className="mt-2 text-base text-slate-700">loading...</p>
                 }
             </div>
-            <div>
+            <div className="pb-16">
                 { projects.length > 0 && projects.map(project => (
                     <PortfolioListItem key={project.id} project={project} />
                 )) }
@@ -106,8 +106,8 @@ function PortfolioAuthentication({onLogin}) {
         //console.log(`Failed :( ${JSON.stringify(error)}`);
     }
 
-    function handleSubmit(event) {
-        event.preventDefault();
+    function handleSubmit(e) {
+        e.preventDefault();
 
         loginUser(
             'andrewchurch@gmail.com',
@@ -119,7 +119,7 @@ function PortfolioAuthentication({onLogin}) {
 
     return (
         <div className="flex md:h-screen">
-            <div className="p-8 m-auto">
+            <div className="px-8 py-16 m-auto">
                 <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Selected Projects</h2>
                 {error ? 
                     <p className="text-base text-red-700">{error}</p>
