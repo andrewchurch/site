@@ -21,29 +21,13 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <nav class="hidden fixed w-full p-8 z-10 md:block">
-      <ul class="flex transition-colors text-indigo-600 hover:text-indigo-400">
-        <li>
-          <a href="#fun">
-            <svg class="inline w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-            </svg>&nbsp;<span class="text-xs">fun</span>
-          </a>
-        </li>
-        <li class="hidden ml-auto">
-          <a href="#work">
-            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-            </svg>            
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <nav id="navigation" class="hidden fixed w-full p-8 z-10 md:block"></nav>
 
-    <div class="md:overflow-x-clip">
+    <!-- Panel Overflow -->
+    <div id="panelOverflow" class="md:overflow-x-clip md:h-screen">
       
       <!-- Panel Container -->
-      <div class="grid grid-rows-[repeat(2,auto),minmax(25vh,1fr)] min-h-screen md:grid-rows-none md:grid-cols-3 md:transition-transform md:-translate-x-1/3 md:w-[150%]">
+      <div id="panelContainer" class="grid grid-rows-[repeat(2,auto),minmax(25vh,1fr)] min-h-screen md:grid-rows-none md:grid-cols-3 md:transition-transform md:-translate-x-1/3 md:w-[150%]">
 
         <!-- Colophon Panel -->
         <div id="colophon" class="relative min-content">

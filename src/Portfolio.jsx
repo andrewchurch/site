@@ -106,8 +106,8 @@ function PortfolioAuthentication({onLogin}) {
         //console.log(`Failed :( ${JSON.stringify(error)}`);
     }
 
-    function handleSubmit(event) {
-        event.preventDefault();
+    function handleSubmit(e) {
+        e.preventDefault();
 
         loginUser(
             'andrewchurch@gmail.com',
