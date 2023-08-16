@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 
 function FunButton({onClick}) {
-
     return (
         <li>
             <a href="#fun" onClick={onClick}>
@@ -14,7 +13,6 @@ function FunButton({onClick}) {
 }
 
 function WorkButton({onClick}) {
-
     return (
         <li className="ml-auto">
             <a href="#work" onClick={onClick}>
