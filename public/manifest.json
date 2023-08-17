@@ -1,0 +1,11 @@
+{
+    "name": "Andrew, Web Guy",
+    "short_name": "Andrew",
+    "icons": [{
+        "src": "dude.png",
+        "sizes": "512x512"
+    }],
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff",
+    "display": "fullscreen"
+}
