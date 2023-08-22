@@ -47,14 +47,14 @@
     <nav id="navigation" class="hidden fixed w-full p-8 z-10 md:block"></nav>
 
     <!-- Panel Overflow -->
-    <div id="panelOverflow" class="snap-y overflow-y-auto h-screen md:snap-none md:overflow-x-clip md:h-screen">
+    <div id="panelOverflow" class="snap-y overflow-y-auto h-screen md:snap-none md:overflow-x-clip">
       
       <!-- Panel Container -->
-      <div id="panelContainer" class="grid grid-rows-[repeat(3,minmax(50vh,auto))] md:min-h-screen md:grid-rows-none md:grid-cols-3 md:transition-transform md:-translate-x-1/3 md:w-[150%]">
+      <div id="panelContainer" class="grid grid-rows-[repeat(3,minmax(50%,auto))] min-h-screen md:grid-rows-none md:grid-cols-3 md:transition-transform md:-translate-x-1/3 md:w-[150%]">
 
         <!-- Colophon Panel -->
         <div id="colophon" tabindex="0" class="relative snap-start md:snap-align-none">
-          <div class="flex md:sticky md:h-screen md:top-0">
+          <div class="flex h-full md:sticky md:h-screen md:top-0">
             <div class="m-auto px-8 py-16">
               <img class="rounded-full w-20 h-20 ring-2 ring-indigo-400" src="/src/assets/images/headshot-cropped.jpg" alt="Headshot of Andrew">
               <div class="mt-1">

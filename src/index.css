@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/*  https://benborgers.com/posts/tailwind-h-screen */
+@supports (-webkit-touch-callout: none) {
+    .h-screen {
+        height: -webkit-fill-available;
+    }
+}
+
 @font-face {
     font-family: "ARCADECLASSIC";
     src: url('./assets/fonts/arcadeclassicv2.ttf');
