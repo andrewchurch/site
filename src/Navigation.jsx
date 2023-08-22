@@ -26,20 +26,19 @@ function WorkButton({onClick}) {
 
 export default function Navigation() {
     const [activePanel, setActivePanel] = useState(2);
-    
-    // this whole approach is gross; need to rewrite it
+
+    const panelContainer = document.getElementById('panelContainer');
+    const panelClass = 'md:-translate-x-1/3';
+    const overflowContainer = document.getElementById('panelOverflow');
+    const overflowClass = 'md:overflow-hidden';
+
     function changePanel(panel) {
         event.preventDefault();
 
         // temporarily set the active panel to 0 (nothing) so that nav dissapears during CSS transition
         setActivePanel(0);
 
-        const panelContainer = document.getElementById('panelContainer');
-        const panelClass = 'md:-translate-x-1/3';
-        const overflowContainer = document.getElementById('panelOverflow');
-        const overflowClass = 'md:overflow-hidden';
-
-        if (panel == 1) {
+        if (panel === 1) {
             overflowContainer.classList.add(overflowClass);
             panelContainer.classList.remove(panelClass);
         } else {
@@ -50,7 +49,7 @@ export default function Navigation() {
         // wait to change the active panel until the CSS transition finishes
         setTimeout(() => {
             setActivePanel(panel);
-          }, '100');
+        }, '100');
     }
 
     return (
