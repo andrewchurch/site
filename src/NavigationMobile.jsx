@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import debounce from 'lodash.debounce';
 
 function FunButton({onClick}) {
     return (
@@ -58,8 +59,24 @@ export default function NavigationMobile() {
         }, '50');
     }
 
+    function handleScroll(e) {
+
+        // when colophon is > 0 pixels from top of screen, we're looking at first panel
+        // don't need to account for in-between since we're using scroll snap
+        const colophonYPosition = colophonPanel.getBoundingClientRect().top;
+        setActivePanel(colophonYPosition > 0 ? 1 : 2);
+    }
+
     useEffect(() => {
-        overflowContainer.scrollTop = 99999;
+        colophonPanel.scrollIntoView({
+            block: 'start',
+        });
+        overflowContainer.addEventListener(
+            'scroll', 
+            debounce(() => {
+                handleScroll();
+            }, 50)
+        );
     }, []);
 
     return (
