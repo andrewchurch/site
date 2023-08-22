@@ -119,7 +119,7 @@ function PortfolioAuthentication({onLogin}) {
 
     return (
         <div className="flex md:h-screen">
-            <div className="px-8 py-16 m-auto">
+            <div className="px-8 py-16 my-auto md:m-auto">
                 <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Selected Projects</h2>
                 {error ? 
                     <p className="text-base text-red-700">{error}</p>
@@ -139,7 +139,7 @@ export default function Portfolio() {
     const [isLoggedIn, setLoggedIn] = useState(false);
 
     return (
-        <div className="w-full mx-auto max-w-xl">
+        <div className="w-full my-auto max-w-xl md:m-auto">
             { isLoggedIn ? 
                 <PortfolioList />
                 :
