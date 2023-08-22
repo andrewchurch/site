@@ -28,7 +28,7 @@ export default function Arcade() {
     }, []);
 
     return (
-        <div className="p-16 m-auto text-center">
+        <div className="m-auto text-center">
             <Player
                 style={playerStyle}
             />

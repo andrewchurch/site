@@ -37,7 +37,7 @@
     })(window,document,'script','dataLayer','GTM-KJPF9NXB');</script>
     <!-- End Google Tag Manager -->
   </head>
-  <body>
+  <body class="bg-gray-100">
     
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KJPF9NXB"
@@ -47,14 +47,14 @@
     <nav id="navigation" class="hidden fixed w-full p-8 z-10 md:block"></nav>
 
     <!-- Panel Overflow -->
-    <div id="panelOverflow" class="md:overflow-x-clip md:h-screen">
+    <div id="panelOverflow" class="snap-y overflow-y-auto h-screen md:snap-none md:overflow-x-clip">
       
       <!-- Panel Container -->
-      <div id="panelContainer" class="grid grid-rows-[repeat(2,auto),minmax(25vh,1fr)] min-h-screen md:grid-rows-none md:grid-cols-3 md:transition-transform md:-translate-x-1/3 md:w-[150%]">
+      <div id="panelContainer" class="grid grid-rows-[repeat(3,minmax(50%,auto))] h-screen md:h-auto md:min-h-screen md:grid-rows-none md:grid-cols-3 md:transition-transform md:-translate-x-1/3 md:w-[150%]">
 
         <!-- Colophon Panel -->
-        <div id="colophon" class="relative min-content">
-          <div class="flex md:sticky md:h-screen md:top-0">
+        <div id="colophon" tabindex="0" class="bg-white relative snap-start md:snap-align-none">
+          <div class="flex h-full md:sticky md:h-screen md:top-0">
             <div class="m-auto px-8 py-16">
               <img class="rounded-full w-20 h-20 ring-2 ring-indigo-400" src="/src/assets/images/headshot-cropped.jpg" alt="Headshot of Andrew">
               <div class="mt-1">
@@ -84,13 +84,15 @@
               </div>
             </div>
           </div>
+
+          <nav id="navigationMobile" class="absolute top-8 right-8 md:hidden"></nav>
         </div>
 
         <!-- Portfolio Panel -->
-        <div id="portfolio" class="bg-gray-100 flex md:order-last md:min-h-screen"></div> 
+        <div id="portfolio" class="bg-gray-100 flex order-last md:min-h-screen"></div> 
 
         <!-- Arcade Panel -->
-        <div id="arcade" class="bg-slate-500 text-zinc-100 flex md:order-first md:h-screen"></div>
+        <div id="arcade" class="bg-slate-500 text-zinc-100 flex order-first snap-start md:snap-align-none md:top-0 md:sticky md:h-screen"></div>
 
       </div>
 
