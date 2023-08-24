@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function FunButton({onClick}) {
     return (
@@ -25,7 +25,7 @@ function WorkButton({onClick}) {
 }
 
 export default function Navigation() {
-    const [activePanel, setActivePanel] = useState(2);
+    const [activePanel, setActivePanel] = useState(0);
 
     const panelContainer = document.getElementById('panelContainer');
     const panelClass = 'md:-translate-x-1/3';
@@ -51,6 +51,15 @@ export default function Navigation() {
             setActivePanel(panel);
         }, '100');
     }
+
+    useEffect(() => {
+
+        // on load set panel to 2 and add transition 
+        changePanel(2);
+        setTimeout(() => {
+            panelContainer.classList.add('md:transition-transform');
+        }, '100');
+    }, []);
 
     return (
         <ul className="flex transition-colors text-indigo-600 hover:text-indigo-400">
