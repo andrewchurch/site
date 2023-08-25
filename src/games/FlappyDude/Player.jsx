@@ -1,6 +1,42 @@
 import { forwardRef } from 'react';
 
-const Player = forwardRef(function Player(props, ref) {
+export function playerFlap(player, playerConfig) {
+    let playerSpeed = player.speed;
+    playerSpeed = Math.max(
+        playerSpeed - playerConfig.flapSpeed,
+        -playerConfig.maxSpeed,
+    );
+    return playerSpeed;
+}
+
+export function playerApplyGravity(player, playerConfig) {
+    let playerSpeed = player.speed;
+    playerSpeed = Math.min(
+        playerSpeed + playerConfig.gravity,
+        playerConfig.maxSpeed,
+    );
+    return playerSpeed;
+}   
+
+// determine new player position based on existing position + speed
+export function playerPosition(player, board) {
+    const playerSpeed = player.speed;
+    const boardHeight = board.specs.height;
+    let playerYPosition = player.pY;
+
+    // if player moves below bottom of board, move them to top
+    if (playerYPosition > (boardHeight / 2)) {
+        playerYPosition = boardHeight - (boardHeight + (boardHeight / 2));
+    
+    // player moves above top, move them to bottom
+    } else if (playerYPosition < boardHeight - (boardHeight + (boardHeight / 2))) {
+        playerYPosition = boardHeight / 2;
+    }
+
+    return playerYPosition + playerSpeed;
+}
+
+export const Player = forwardRef(function Player(props, ref) {
 
     return (
         <svg 
@@ -17,5 +53,3 @@ const Player = forwardRef(function Player(props, ref) {
         </svg>
     )
 });
-
-export default Player;

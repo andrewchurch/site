@@ -12,10 +12,10 @@ export default function FlappyDude() {
                 <StartScreen onClick={() => setGameMode('playing') } />
             }
             {gameMode === 'playing' && 
-                <Game />
+                <Game endGame={() => setGameMode('end')}/>
             }
-            {gameMode === 'gameover' && 
-                <GameOverScreen />
+            {gameMode === 'end' && 
+                <GameOverScreen onClick={() => setGameMode('start') } />
             }
         </>
     )
