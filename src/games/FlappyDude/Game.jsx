@@ -2,41 +2,46 @@ import { useEffect, useState, useRef } from 'react';
 import { Player, playerFlap, playerApplyGravity, playerPosition } from './Player';
 import { Obstacle, obstaclesSetup, obstacleUpdateHeight, obstaclesMove, obstaclesPosition } from './Obstacles';
 
-// (number * obstacleGap) + ((number - 1) * width) needs to equal 1
 const gameConfig = {
-    'fps': 60,
-    'debugFps': true,
+    'maxFps': 60, // throttles fps to keep consistent speed on higher refresh screens
+    'debugFps': true, // if true, displays throttled fps and fps on screen
     'obstacles': {
-        'number': 2,
-        'speedIncrease': 0.001, // obstacle speed increase over time
+        'initialSpeed': 0.004, // movement in board width per frame
+        'speedIncrease': 0.000001, // increase in speed per frame
+        'obstacleGapThreshold': 0.25, // +/- from middle that gap can appear, in percentage of board height
+        'obstaclesGap': 0.45, // gap between obstacles in percentage of board width
+
+        // NOTE: (number * obstacleGap) + ((number - 1) * width) needs to equal 1
+        'number': 2, // number of obstacles, 
         'width': 0.05, // width of obstacle in percentage of board width (0.10 = 10%)
         'obstacleGap': 0.25, // gap within obstacle in percentage of board height
-        'obstacleGapThreshold': 0.25, // +/- from middle that gap can appear, in percentage of board height
-        'obstaclesGap': 0.45 // gap between obstacles in percentage of board width
     },
     'player': {
-        'maxSpeed': 10,
-        'gravity': .2,
-        'flapSpeed': 8,
+        'height': .08, // height of player in percentage of board height 
+        'initialSpeed': 0, // movement in percentage of board height per frame
+        'maxSpeed': 0.0125, // movement in percentage of board height per frame 
+        'gravity': 0.00025, // decrease in speed per frame
+        'flapSpeed': 0.0110 // increase in speed when flapping
     },
 };
 
 export default function Game({endGame}) {
-    let frame = useRef(0);
-    let fpsCount = useRef(0);
-    let fpsCountThrottled = useRef(0);
-    let then = useRef(window.performance.now());
-    let gameState = useRef({
+    const frame = useRef(0);
+    const fpsCount = useRef(0);
+    const fpsCountThrottled = useRef(0);
+    const msPrev = useRef(window.performance.now());
+    const gameState = useRef({
         'obstacles': {
-            'speed': 2,
+            'speed': gameConfig.obstacles.initialSpeed,
             'obstacles': [],
         },
         'player': {
-            'speed': 0,
+            'speed': gameConfig.player.initialSpeed,
             'pY': 0
         }
     });
 
+    // dom references
     const obstaclesRef = useRef([]);
     const frameCounterRef = useRef(null);
     const gameBoardRef = useRef(null);
@@ -49,6 +54,16 @@ export default function Game({endGame}) {
         gameState.current.board = {
             'rect': gameBoardRef.current.getBoundingClientRect()
         };
+
+        // set player size based on game board height (so that it makes sense on small screens)
+        const playerHeight = gameConfig.player.height * gameState.current.board.rect.height;
+        
+        // get width ratio from initial state so we don't need to also specify width in config
+        const playerRect = playerRef.current.getBoundingClientRect();
+        const widthRatio = playerRect.width / playerRect.height;
+        
+        playerRef.current.style.height = playerHeight + 'px';
+        playerRef.current.style.width = playerHeight * widthRatio + 'px';
 
         // update game state with obstacle info
         gameState.current.obstacles.obstacles = obstaclesSetup(gameConfig.obstacles, gameState.current.board);
@@ -104,14 +119,14 @@ export default function Game({endGame}) {
         // do this again ASAP
         frame.current = requestAnimationFrame(tick);
 
-        const msPerFrame = 1000 / gameConfig.fps;
-        const msElapsed = newtime - then.current;
+        const msPerFrame = 1000 / gameConfig.maxFps;
+        const msElapsed = newtime - msPrev.current;
 
         // throttle fps
         // https://stackoverflow.com/questions/19764018/controlling-fps-with-requestanimationframe
         // https://chriscourses.com/blog/standardize-your-javascript-games-framerate-for-different-monitors
         if (msElapsed > msPerFrame) {
-            then.current = newtime - (msElapsed % msPerFrame);
+            msPrev.current = newtime - (msElapsed % msPerFrame);
         } else {
             return;
         }

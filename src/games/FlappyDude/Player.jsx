@@ -22,7 +22,8 @@ export function playerApplyGravity(player, playerConfig) {
 export function playerPosition(player, board) {
     const playerSpeed = player.speed;
     const boardHeight = board.rect.height;
-    let playerYPosition = player.pY;
+
+    let playerYPosition = player.pY + (playerSpeed * boardHeight);
 
     // if player moves below bottom of board, move them to top
     if (playerYPosition > (boardHeight / 2)) {
@@ -33,19 +34,19 @@ export function playerPosition(player, board) {
         playerYPosition = boardHeight / 2;
     }
 
-    return playerYPosition + playerSpeed;
+    return playerYPosition;
 }
 
 export const Player = forwardRef(function Player(props, ref) {
 
     return (
         <svg 
-            width="250" height="402" viewBox="0 0 250 402" fill="none" xmlns="http://www.w3.org/2000/svg"
-            className="w-8 h-10 m-auto"
+            width="250" height="400" viewBox="0 0 250 400" fill="none" xmlns="http://www.w3.org/2000/svg"
+            className="w-[25px] h-[40px] m-auto"
             ref={ref}
         >
             <circle cx="125" cy="125" r="125" fill="white"/>
-            <path d="M125 242V402M7 263.34L119.583 328.34M129 328.34L241.583 263.34" stroke="white" strokeWidth="20"/>
+            <path d="M125 240V400M7 261.34L119.583 326.34M129 326.34L241.583 261.34" stroke="white" strokeWidth="20"/>
             <line x1="76.0618" y1="188.68" x2="175.681" y2="197.396" stroke="#0F172A" strokeWidth="20"/>
             <line x1="140" y1="104" x2="190" y2="104" stroke="#0F172A" strokeWidth="30"/>
             <line x1="67" y1="104" x2="117" y2="104" stroke="#0F172A" strokeWidth="30"/>

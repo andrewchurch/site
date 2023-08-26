@@ -42,14 +42,12 @@ export function obstaclesMove(obstacles, obstaclesConfig) {
 
 export function obstaclesPosition(obstacles, obstaclesConfig, board) {
     obstacles.obstacles.forEach(function (obstacle, i) {
-        let obstacleXPosition = obstacle.pX;
+        let obstacleXPosition = obstacle.pX - (obstacles.speed * board.rect.width);
 
         // if obstacle is off the gameboard move it back to initial position and update height
         if (Math.abs(obstacleXPosition) > (obstacle.width + board.rect.width)) {
             obstacleXPosition = 0;
             obstacle.height = obstacleUpdateHeight(obstacle, obstaclesConfig, board);
-        } else {
-            obstacleXPosition -= obstacles.speed;
         }
 
         obstacle.pX = obstacleXPosition;
