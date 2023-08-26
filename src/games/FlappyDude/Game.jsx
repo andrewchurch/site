@@ -4,7 +4,7 @@ import { Obstacle, obstaclesSetup, obstacleUpdateHeight, obstaclesMove, obstacle
 
 // (number * obstacleGap) + ((number - 1) * width) needs to equal 1
 const gameConfig = {
-    'fps': 1000 / 60,
+    'fps': 60,
     'debugFps': true,
     'obstacles': {
         'number': 2,
@@ -104,9 +104,14 @@ export default function Game({endGame}) {
         // do this again ASAP
         frame.current = requestAnimationFrame(tick);
 
+        const msPerFrame = 1000 / gameConfig.fps;
+        const msElapsed = newtime - then.current;
+
         // throttle fps
-        if (newtime - then.current > gameConfig.fps) {
-            then.current = newtime - ((newtime - then.current) % gameConfig.fps);
+        // https://stackoverflow.com/questions/19764018/controlling-fps-with-requestanimationframe
+        // https://chriscourses.com/blog/standardize-your-javascript-games-framerate-for-different-monitors
+        if (msElapsed > msPerFrame) {
+            then.current = newtime - (msElapsed % msPerFrame);
         } else {
             return;
         }
@@ -156,7 +161,6 @@ export default function Game({endGame}) {
         boardSetup();
 
         // tick with throttled RAF
-        // https://stackoverflow.com/questions/19764018/controlling-fps-with-requestanimationframe
         frame.current = requestAnimationFrame(tick);
 
         let frameLogInterval = null;
