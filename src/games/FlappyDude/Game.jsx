@@ -5,6 +5,7 @@ import { Obstacle, obstaclesSetup, obstacleUpdateHeight, obstaclesMove, obstacle
 // (number * obstacleGap) + ((number - 1) * width) needs to equal 1
 const gameConfig = {
     'fps': 1000 / 60,
+    'debugFps': true,
     'obstacles': {
         'number': 2,
         'speedIncrease': 0.001, // obstacle speed increase over time
@@ -22,10 +23,9 @@ const gameConfig = {
 
 export default function Game({endGame}) {
     let frame = useRef(0);
+    let fpsCount = useRef(0);
+    let fpsCountThrottled = useRef(0);
     let then = useRef(window.performance.now());
-    let gameBoardRef = useRef(null);
-    let playerRef = useRef(null);
-    let obstaclesRef = useRef([]);
     let gameState = useRef({
         'obstacles': {
             'speed': 2,
@@ -37,6 +37,11 @@ export default function Game({endGame}) {
         }
     });
 
+    const obstaclesRef = useRef([]);
+    const frameCounterRef = useRef(null);
+    const gameBoardRef = useRef(null);
+    const playerRef = useRef(null);
+
     // set up board -- this happens once on initial render AND every time the window is resized
     function boardSetup() {
 
@@ -44,8 +49,6 @@ export default function Game({endGame}) {
         gameState.current.board = {
             'rect': gameBoardRef.current.getBoundingClientRect()
         };
-
-        // 
 
         // update game state with obstacle info
         gameState.current.obstacles.obstacles = obstaclesSetup(gameConfig.obstacles, gameState.current.board);
@@ -96,6 +99,8 @@ export default function Game({endGame}) {
 
     function tick(newtime) {
 
+        fpsCount.current++;
+
         // do this again ASAP
         frame.current = requestAnimationFrame(tick);
 
@@ -105,6 +110,8 @@ export default function Game({endGame}) {
         } else {
             return;
         }
+
+        fpsCountThrottled.current++;
 
         // accelerate and position player
         gameState.current.player.speed = playerApplyGravity(gameState.current.player, gameConfig.player);
@@ -134,10 +141,16 @@ export default function Game({endGame}) {
         });
     }
 
+    function logFrames() {
+        frameCounterRef.current.innerHTML = fpsCountThrottled.current + ' / ' + fpsCount.current;
+        fpsCount.current = 0;
+        fpsCountThrottled.current = 0;
+    }
+
     function handleBoardClick() {
         gameState.current.player.speed = playerFlap(gameState.current.player, gameConfig.player);
     }
-    
+
     useEffect(() => {       
         window.addEventListener('resize', boardSetup); 
         boardSetup();
@@ -146,9 +159,15 @@ export default function Game({endGame}) {
         // https://stackoverflow.com/questions/19764018/controlling-fps-with-requestanimationframe
         frame.current = requestAnimationFrame(tick);
 
+        let frameLogInterval = null;
+        if (gameConfig.debugFps) {
+            frameLogInterval = setInterval(logFrames, 1000);
+        }
+
         return () => {
             window.removeEventListener('resize', boardSetup);
             cancelAnimationFrame(frame.current);
+            clearInterval(frameLogInterval);
         }
     }, []);
 
@@ -163,6 +182,9 @@ export default function Game({endGame}) {
         <div ref={gameBoardRef} onClick={handleBoardClick} className="w-full h-full relative flex">
             <Player ref={playerRef} />
             {obstacleComponents}
+            {gameConfig.debugFps && 
+                <div ref={frameCounterRef} className="absolute bottom-0 right-0 bg-black text-white text-xs"></div>
+            }
         </div>
     )
 }

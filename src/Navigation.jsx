@@ -55,7 +55,7 @@ export default function Navigation() {
     useEffect(() => {
 
         // on load set panel to 2 and add transition 
-        changePanel(2);
+        changePanel(1);
         setTimeout(() => {
             panelContainer.classList.add('md:transition-transform');
         }, '100');
