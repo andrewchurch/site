@@ -84,9 +84,6 @@ export default function NavigationMobile() {
             {activePanel == 2 && 
                 <FunButton onClick={() => changePanel(1)} />
             }
-            {activePanel == 1 && 
-                <WorkButton onClick={() => changePanel(2)} />
-            }
         </ul>
     )
 }

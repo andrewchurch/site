@@ -4,20 +4,22 @@ import { Obstacle, obstaclesSetup, obstacleUpdateHeight, obstaclesMove, obstacle
 
 const gameConfig = {
     'maxFps': 60, // throttles fps to keep consistent speed on higher refresh screens
-    'debugFps': true, // if true, displays throttled fps and fps on screen
+    'debugFps': false, // if true, displays throttled fps and fps on screen
     'obstacles': {
         'initialSpeed': 0.004, // movement in board width per frame
         'speedIncrease': 0.000001, // increase in speed per frame
-        'obstacleGapThreshold': 0.25, // +/- from middle that gap can appear, in percentage of board height
-        'obstaclesGap': 0.45, // gap between obstacles in percentage of board width
 
-        // NOTE: (number * obstacleGap) + ((number - 1) * width) needs to equal 1
+        // NOTE: obstacleGap + (obstacleGapTreshold * 2) shouldn't be more than 1
+        'obstacleGap': 0.25, // gap within obstacle in percentage of board height
+        'obstacleGapThreshold': 0.30, // +/- from middle that gap can appear, in percentage of board height
+
+        // NOTE: (number * obstaclesGap) + ((number - 1) * width) needs to equal 1
         'number': 2, // number of obstacles, 
         'width': 0.05, // width of obstacle in percentage of board width (0.10 = 10%)
-        'obstacleGap': 0.25, // gap within obstacle in percentage of board height
+        'obstaclesGap': 0.45, // gap between obstacles in percentage of board width
     },
     'player': {
-        'height': .08, // height of player in percentage of board height 
+        'height': .05, // height of player in percentage of board height 
         'initialSpeed': 0, // movement in percentage of board height per frame
         'maxSpeed': 0.0125, // movement in percentage of board height per frame 
         'gravity': 0.00025, // decrease in speed per frame
