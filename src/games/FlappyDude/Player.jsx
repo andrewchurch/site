@@ -21,7 +21,7 @@ export function playerApplyGravity(player, playerConfig) {
 // determine new player position based on existing position + speed
 export function playerPosition(player, board) {
     const playerSpeed = player.speed;
-    const boardHeight = board.specs.height;
+    const boardHeight = board.rect.height;
     let playerYPosition = player.pY;
 
     // if player moves below bottom of board, move them to top

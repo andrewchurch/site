@@ -5,8 +5,8 @@ export function obstaclesSetup(obstaclesConfig, board) {
 
     for (let i = 0; i < obstaclesConfig.number; i++) {
         obstacles.push({
-            'pX': i * ((obstaclesConfig.width + obstaclesConfig.obstaclesGap) * board.specs.width),
-            'width': obstaclesConfig.width * board.specs.width
+            'pX': i * ((obstaclesConfig.width + obstaclesConfig.obstaclesGap) * board.rect.width),
+            'width': obstaclesConfig.width * board.rect.width
         });
     }
 
@@ -17,7 +17,7 @@ export function obstacleUpdateHeight(obstacle, obstaclesConfig, board) {
     let obstacleTopHeight = 0;
     let obstacleBottomHeight = 0;
 
-    const boardHeight = board.specs.height;
+    const boardHeight = board.rect.height;
 
     // top height is between middle of board + threshold and middle of board - threshold
     const maxHeight = (boardHeight / 2) + (boardHeight * obstaclesConfig.obstacleGapThreshold);
@@ -45,7 +45,7 @@ export function obstaclesPosition(obstacles, obstaclesConfig, board) {
         let obstacleXPosition = obstacle.pX;
 
         // if obstacle is off the gameboard move it back to initial position and update height
-        if (Math.abs(obstacleXPosition) > (obstacle.width + board.specs.width)) {
+        if (Math.abs(obstacleXPosition) > (obstacle.width + board.rect.width)) {
             obstacleXPosition = 0;
             obstacle.height = obstacleUpdateHeight(obstacle, obstaclesConfig, board);
         } else {

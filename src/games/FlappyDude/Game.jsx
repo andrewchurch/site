@@ -2,10 +2,9 @@ import { useEffect, useState, useRef } from 'react';
 import { Player, playerFlap, playerApplyGravity, playerPosition } from './Player';
 import { Obstacle, obstaclesSetup, obstacleUpdateHeight, obstaclesMove, obstaclesPosition } from './Obstacles';
 
-const gameSpeed = 0;
-
 // (number * obstacleGap) + ((number - 1) * width) needs to equal 1
 const gameConfig = {
+    'fps': 1000 / 60,
     'obstacles': {
         'number': 2,
         'speedIncrease': 0.001, // obstacle speed increase over time
@@ -23,6 +22,7 @@ const gameConfig = {
 
 export default function Game({endGame}) {
     let frame = useRef(0);
+    let then = useRef(window.performance.now());
     let gameBoardRef = useRef(null);
     let playerRef = useRef(null);
     let obstaclesRef = useRef([]);
@@ -42,8 +42,10 @@ export default function Game({endGame}) {
 
         // get and store board size
         gameState.current.board = {
-            'specs': gameBoardRef.current.getBoundingClientRect()
+            'rect': gameBoardRef.current.getBoundingClientRect()
         };
+
+        // 
 
         // update game state with obstacle info
         gameState.current.obstacles.obstacles = obstaclesSetup(gameConfig.obstacles, gameState.current.board);
@@ -54,23 +56,6 @@ export default function Game({endGame}) {
             obstacleRef.style.width = gameState.current.obstacles.obstacles[i].width + 'px';
             gameState.current.obstacles.obstacles[i].height = obstacleUpdateHeight(gameState.current.obstacles.obstacles[i], gameConfig.obstacles, gameState.current.board);
         });
-    }
-
-    function draw() {
-
-        // draw player
-        playerRef.current.style.transform = 'translateY(' + gameState.current.player.pY + 'px)';
-
-        // draw obstacles
-        obstaclesRef.current.forEach(function (obstacleRef, i) {
-            obstacleRef.style.transform = 'translateX(' + gameState.current.obstacles.obstacles[i].pX + 'px)';
-            obstacleRef.style.setProperty('--obstacle-top-height', gameState.current.obstacles.obstacles[i].height.top + 'px');
-            obstacleRef.style.setProperty('--obstacle-bottom-height', gameState.current.obstacles.obstacles[i].height.bottom + 'px');
-        });
-    }
-
-    function handleBoardClick() {
-        gameState.current.player.speed = playerFlap(gameState.current.player, gameConfig.player);
     }
 
     function detectCollision() {
@@ -96,7 +81,7 @@ export default function Game({endGame}) {
                 // if top of player is < height of top 
                 // OR if bottom of player is > height of top + gap
                 const obstacleTopHeight = gameState.current.obstacles.obstacles[i].height.top;
-                const gapHeight = gameConfig.obstacles.obstacleGap * gameState.current.board.specs.height;
+                const gapHeight = gameConfig.obstacles.obstacleGap * gameState.current.board.rect.height;
                 if (
                     playerRect.y < obstacleTopHeight
                     || playerRect.y + playerRect.height > obstacleTopHeight + gapHeight
@@ -109,7 +94,17 @@ export default function Game({endGame}) {
         return false;
     }
 
-    function tick() {
+    function tick(newtime) {
+
+        // do this again ASAP
+        frame.current = requestAnimationFrame(tick);
+
+        // throttle fps
+        if (newtime - then.current > gameConfig.fps) {
+            then.current = newtime - ((newtime - then.current) % gameConfig.fps);
+        } else {
+            return;
+        }
 
         // accelerate and position player
         gameState.current.player.speed = playerApplyGravity(gameState.current.player, gameConfig.player);
@@ -124,29 +119,36 @@ export default function Game({endGame}) {
         }
 
         draw();
+    }
 
-        // do this again ASAP
-        if (!gameSpeed) {
-            frame.current = requestAnimationFrame(tick);
-        }
+    function draw() {
+
+        // draw player
+        playerRef.current.style.transform = 'translateY(' + gameState.current.player.pY + 'px)';
+
+        // draw obstacles
+        obstaclesRef.current.forEach(function (obstacleRef, i) {
+            obstacleRef.style.transform = 'translateX(' + gameState.current.obstacles.obstacles[i].pX + 'px)';
+            obstacleRef.style.setProperty('--obstacle-top-height', gameState.current.obstacles.obstacles[i].height.top + 'px');
+            obstacleRef.style.setProperty('--obstacle-bottom-height', gameState.current.obstacles.obstacles[i].height.bottom + 'px');
+        });
+    }
+
+    function handleBoardClick() {
+        gameState.current.player.speed = playerFlap(gameState.current.player, gameConfig.player);
     }
     
     useEffect(() => {       
         window.addEventListener('resize', boardSetup); 
         boardSetup();
 
-        if (gameSpeed) {
-            const intervalId = setInterval(tick, gameSpeed);
-            return () => {
-                window.removeEventListener('resize', boardSetup);
-                clearInterval(intervalId);
-            }
-        } else {
-            frame.current = requestAnimationFrame(tick);
-            return () => {
-                window.removeEventListener('resize', boardSetup);
-                cancelAnimationFrame(frame.current);
-            }
+        // tick with throttled RAF
+        // https://stackoverflow.com/questions/19764018/controlling-fps-with-requestanimationframe
+        frame.current = requestAnimationFrame(tick);
+
+        return () => {
+            window.removeEventListener('resize', boardSetup);
+            cancelAnimationFrame(frame.current);
         }
     }, []);
 
