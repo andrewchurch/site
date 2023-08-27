@@ -6,6 +6,7 @@ export function obstaclesSetup(obstaclesConfig, board) {
     for (let i = 0; i < obstaclesConfig.number; i++) {
         obstacles.push({
             'pX': i * ((obstaclesConfig.width + obstaclesConfig.obstaclesGap) * board.rect.width),
+            'scored': false,
             'width': obstaclesConfig.width * board.rect.width
         });
     }
@@ -36,7 +37,7 @@ export function obstacleUpdateHeight(obstacle, obstaclesConfig, board) {
     };
 }
 
-export function obstaclesMove(obstacles, obstaclesConfig) {
+export function obstaclesAccelerate(obstacles, obstaclesConfig) {
     return obstacles.speed += obstaclesConfig.speedIncrease;
 }
 
@@ -44,10 +45,11 @@ export function obstaclesPosition(obstacles, obstaclesConfig, board) {
     obstacles.obstacles.forEach(function (obstacle, i) {
         let obstacleXPosition = obstacle.pX - (obstacles.speed * board.rect.width);
 
-        // if obstacle is off the gameboard move it back to initial position and update height
+        // if obstacle is off the gameboard move it back to initial position, update it's height, and reset scoring
         if (Math.abs(obstacleXPosition) > (obstacle.width + board.rect.width)) {
             obstacleXPosition = 0;
             obstacle.height = obstacleUpdateHeight(obstacle, obstaclesConfig, board);
+            obstacle.scored = false;
         }
 
         obstacle.pX = obstacleXPosition;

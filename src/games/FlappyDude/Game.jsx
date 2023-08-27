@@ -1,10 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
 import { Player, playerFlap, playerApplyGravity, playerPosition } from './Player';
-import { Obstacle, obstaclesSetup, obstacleUpdateHeight, obstaclesMove, obstaclesPosition } from './Obstacles';
+import { Obstacle, obstaclesSetup, obstacleUpdateHeight, obstaclesAccelerate, obstaclesPosition } from './Obstacles';
 
 const gameConfig = {
     'maxFps': 60, // throttles fps to keep consistent speed on higher refresh screens
     'debugFps': false, // if true, displays throttled fps and fps on screen
+    'collisions': true, // set to false to disable collisions (when debugging)
     'obstacles': {
         'initialSpeed': 0.004, // movement in board width per frame
         'speedIncrease': 0.000001, // increase in speed per frame
@@ -28,11 +29,9 @@ const gameConfig = {
 };
 
 export default function Game({endGame}) {
-    const frame = useRef(0);
-    const fpsCount = useRef(0);
-    const fpsCountThrottled = useRef(0);
-    const msPrev = useRef(window.performance.now());
+    
     const gameState = useRef({
+        'score': 0,
         'obstacles': {
             'speed': gameConfig.obstacles.initialSpeed,
             'obstacles': [],
@@ -43,11 +42,18 @@ export default function Game({endGame}) {
         }
     });
 
+    // tick related
+    const frame = useRef(0);
+    const fpsCount = useRef(0);
+    const fpsCountThrottled = useRef(0);
+    const msPrev = useRef(window.performance.now());
+
     // dom references
-    const obstaclesRef = useRef([]);
-    const frameCounterRef = useRef(null);
     const gameBoardRef = useRef(null);
     const playerRef = useRef(null);
+    const obstaclesRef = useRef([]);
+    const scoreRef = useRef(null);
+    const frameCounterRef = useRef(null);
 
     // set up board -- this happens once on initial render AND every time the window is resized
     function boardSetup() {
@@ -114,6 +120,21 @@ export default function Game({endGame}) {
         return false;
     }
 
+    function detectUpdateScore(obstacles) {
+        obstacles.obstacles.forEach(function (obstacle, i) {
+            
+            // if we haven't already scored with this obstacle
+            if (!obstacle.scored) {
+
+                // then check to see if it's past the midway point of board
+                if ((Math.abs(obstacle.pX) - obstacle.width) > gameState.current.board.rect.width / 2) {
+                    obstacle.scored = true;
+                    scoreRef.current.innerHTML = ++gameState.current.score;
+                }
+            }
+        });
+    }
+
     function tick(newtime) {
 
         fpsCount.current++;
@@ -140,12 +161,14 @@ export default function Game({endGame}) {
         gameState.current.player.pY = playerPosition(gameState.current.player, gameState.current.board);
 
         // accelerate and position obstacles
-        gameState.current.obstacles.speed = obstaclesMove(gameState.current.obstacles, gameConfig.obstacles);
+        gameState.current.obstacles.speed = obstaclesAccelerate(gameState.current.obstacles, gameConfig.obstacles);
         gameState.current.obstacles = obstaclesPosition(gameState.current.obstacles, gameConfig.obstacles, gameState.current.board);
-        
-        if (detectCollision()) {
-            endGame();
+
+        if (gameConfig.collisions && detectCollision()) {
+            endGame(gameState.current.score);
         }
+
+        detectUpdateScore(gameState.current.obstacles);
 
         draw();
     }
@@ -201,6 +224,9 @@ export default function Game({endGame}) {
 
     return (
         <div ref={gameBoardRef} onClick={handleBoardClick} className="w-full h-full relative flex">
+            <div className="absolute top-2 left-4 px-4 py-2 bg-slate-500 text-white text-lg font-arcade z-10">
+                Score: <span ref={scoreRef}>0</span>
+            </div>
             <Player ref={playerRef} />
             {obstacleComponents}
             {gameConfig.debugFps && 

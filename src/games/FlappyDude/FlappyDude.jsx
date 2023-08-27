@@ -5,6 +5,7 @@ import GameOverScreen from './GameOver';
 
 export default function FlappyDude() {
     const [gameMode, setGameMode] = useState('start');
+    const [score, setScore] = useState(0);
 
     return (
         <>
@@ -12,10 +13,13 @@ export default function FlappyDude() {
                 <StartScreen onClick={() => setGameMode('playing') } />
             }
             {gameMode === 'playing' && 
-                <Game endGame={() => setGameMode('end')}/>
+                <Game endGame={(score) => {
+                    setScore(score);
+                    setGameMode('end');
+                }} />
             }
             {gameMode === 'end' && 
-                <GameOverScreen onClick={() => setGameMode('start') } />
+                <GameOverScreen score={score} onClick={() => setGameMode('start') } />
             }
         </>
     )
