@@ -1,11 +1,18 @@
 import { forwardRef } from 'react';
 
-export function playerFlap(player, playerConfig) {
+export function playerFlap(player, playerRef, playerConfig) {
     let playerSpeed = player.speed;
+
+    // increase player speed by flap speed up to max
     playerSpeed = Math.max(
         playerSpeed - playerConfig.flapSpeed,
         -playerConfig.maxSpeed,
     );
+
+    // animate player
+    playerRef.classList.add('flap');
+    setTimeout(() => playerRef && playerRef.classList.remove('flap'), 100);
+
     return playerSpeed;
 }
 
@@ -42,11 +49,12 @@ export const Player = forwardRef(function Player(props, ref) {
     return (
         <svg 
             width="250" height="400" viewBox="0 0 250 400" fill="none" xmlns="http://www.w3.org/2000/svg"
-            className="w-[25px] h-[40px] m-auto"
+            className="player w-[25px] h-[40px] m-auto"
             ref={ref}
         >
             <circle cx="125" cy="125" r="125" fill="white"/>
-            <path d="M125 240V400M7 261.34L119.583 326.34M129 326.34L241.583 261.34" stroke="white" strokeWidth="20"/>
+            <path className="player-body player-body--at-rest" d="M125 240V400M7 261.34L119.583 326.34M129 326.34L241.583 261.34" stroke="white" strokeWidth="20"/>
+            <path className="player-body player-body--flapping" d="M125 240V400M7 391.34L119.583 326.34M130 326.34L242.583 391.34" stroke="white" strokeWidth="20"/ >
             <line x1="76.0618" y1="188.68" x2="175.681" y2="197.396" stroke="#0F172A" strokeWidth="20"/>
             <line x1="140" y1="104" x2="190" y2="104" stroke="#0F172A" strokeWidth="30"/>
             <line x1="67" y1="104" x2="117" y2="104" stroke="#0F172A" strokeWidth="30"/>

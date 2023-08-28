@@ -5,6 +5,7 @@ export function obstaclesSetup(obstaclesConfig, board) {
 
     for (let i = 0; i < obstaclesConfig.number; i++) {
         obstacles.push({
+            'drawHeight': true,
             'pX': i * ((obstaclesConfig.width + obstaclesConfig.obstaclesGap) * board.rect.width),
             'scored': false,
             'width': obstaclesConfig.width * board.rect.width
@@ -48,6 +49,7 @@ export function obstaclesPosition(obstacles, obstaclesConfig, board) {
         // if obstacle is off the gameboard move it back to initial position, update it's height, and reset scoring
         if (Math.abs(obstacleXPosition) > (obstacle.width + board.rect.width)) {
             obstacleXPosition = 0;
+            obstacle.drawHeight = true;
             obstacle.height = obstacleUpdateHeight(obstacle, obstaclesConfig, board);
             obstacle.scored = false;
         }

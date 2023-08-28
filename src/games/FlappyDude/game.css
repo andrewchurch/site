@@ -1,0 +1,9 @@
+.player-body--flapping {
+    display: none;
+}
+.flap .player-body--at-rest {
+    display: none;
+}
+.flap .player-body--flapping {
+    display: block;
+}
