@@ -1,4 +1,5 @@
-import { useEffect, useState, useRef } from 'react';
+import './game.css';
+import { useEffect, useRef } from 'react';
 import { Player, playerFlap, playerApplyGravity, playerPosition } from './Player';
 import { Obstacle, obstaclesSetup, obstacleUpdateHeight, obstaclesAccelerate, obstaclesPosition } from './Obstacles';
 
@@ -176,13 +177,18 @@ export default function Game({endGame}) {
     function draw() {
 
         // draw player
-        playerRef.current.style.transform = 'translateY(' + gameState.current.player.pY + 'px)';
+        playerRef.current.style.transform = `translateY(${gameState.current.player.pY}px)`;
 
         // draw obstacles
         obstaclesRef.current.forEach(function (obstacleRef, i) {
-            obstacleRef.style.transform = 'translateX(' + gameState.current.obstacles.obstacles[i].pX + 'px)';
-            obstacleRef.style.setProperty('--obstacle-top-height', gameState.current.obstacles.obstacles[i].height.top + 'px');
-            obstacleRef.style.setProperty('--obstacle-bottom-height', gameState.current.obstacles.obstacles[i].height.bottom + 'px');
+            obstacleRef.style.transform = `translateX(${gameState.current.obstacles.obstacles[i].pX}px)`;
+
+            // only draw updated height when we need to
+            if (gameState.current.obstacles.obstacles[i].drawHeight) {
+                gameState.current.obstacles.obstacles[i].drawHeight = false;
+                obstacleRef.style.setProperty('--obstacle-top-height', `${gameState.current.obstacles.obstacles[i].height.top}px`);
+                obstacleRef.style.setProperty('--obstacle-bottom-height', `${gameState.current.obstacles.obstacles[i].height.bottom}px`);
+            }
         });
     }
 
@@ -193,7 +199,7 @@ export default function Game({endGame}) {
     }
 
     function handleBoardClick() {
-        gameState.current.player.speed = playerFlap(gameState.current.player, gameConfig.player);
+        gameState.current.player.speed = playerFlap(gameState.current.player, playerRef.current, gameConfig.player);
     }
 
     useEffect(() => {       
