@@ -11,7 +11,7 @@ export function playerFlap(player, playerRef, playerConfig) {
 
     // animate player
     playerRef.classList.add('flap');
-    setTimeout(() => playerRef.classList.remove('flap'), 100);
+    setTimeout(() => playerRef && playerRef.classList.remove('flap'), 100);
 
     return playerSpeed;
 }
