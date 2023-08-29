@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, query, where, orderBy, getDocs } from 'firebase/firestore/lite';
+import { getFirestore, collection, query, where, orderBy, limit, getDocs, addDoc } from 'firebase/firestore/lite';
 
 let db = false;
 
@@ -35,5 +35,27 @@ export async function getAllProjects() {
             ...project.data()
         });
     });
+    return res;
+}
+
+export async function getTopTenScores(game) {
+    const q = query(
+        collection(getDb(), 'flappyScores'),
+        orderBy('score', 'desc'),
+        limit(10)
+    );
+    const doc_refs = await getDocs(q);
+    let res = [];
+    doc_refs.forEach(score => {
+        res.push({
+            id: score.id,
+            ...score.data()
+        });
+    });
+    return res;
+}
+
+export async function addScore(score) {
+    const res = await addDoc(collection(getDb(), 'flappyScores'), score);
     return res;
 }
