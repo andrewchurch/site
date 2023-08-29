@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Player } from './Player'
 
-export default function StartScreen({onClick}) {
+export default function StartScreen({startGame}) {
     const playerRef = useRef(null);
 
     function playerFlapAnimation() {
@@ -22,7 +22,7 @@ export default function StartScreen({onClick}) {
     }, []);
 
     return (
-        <div className="w-full h-full relative flex" onClick={onClick}>
+        <div className="w-full h-full relative flex cursor-pointer" onClick={startGame}>
             <div className="m-auto text-center">
                 <h2 className="mb-2 text-2xl tracking-wide font-arcade">Flappy Dude</h2>
                 <Player ref={playerRef} />

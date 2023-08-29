@@ -229,7 +229,7 @@ export default function Game({endGame}) {
     }
 
     return (
-        <div ref={gameBoardRef} onClick={handleBoardClick} className="w-full h-full relative flex">
+        <div ref={gameBoardRef} onClick={handleBoardClick} className="w-full h-full relative flex cursor-pointer">
             <div className="absolute top-2 left-4 px-4 py-2 bg-slate-500 text-white text-lg font-arcade z-10">
                 Score: <span ref={scoreRef}>0</span>
             </div>

@@ -98,12 +98,10 @@ function PortfolioAuthentication({onLogin}) {
 
     function onSuccess(response) {
         onLogin();
-        //console.log(`Success! Response: ${JSON.stringify({ response })}`);
     }
 
     function onFailure(error) {
         setError('Nope. Try again or contact me.')
-        //console.log(`Failed :( ${JSON.stringify(error)}`);
     }
 
     function handleSubmit(e) {

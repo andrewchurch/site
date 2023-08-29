@@ -10,7 +10,7 @@ export default function FlappyDude() {
     return (
         <>
             {gameMode === 'start' && 
-                <StartScreen onClick={() => setGameMode('playing') } />
+                <StartScreen startGame={() => setGameMode('playing') } />
             }
             {gameMode === 'playing' && 
                 <Game endGame={(score) => {
@@ -19,7 +19,7 @@ export default function FlappyDude() {
                 }} />
             }
             {gameMode === 'end' && 
-                <GameOverScreen score={score} onClick={() => setGameMode('start') } />
+                <GameOverScreen score={score} backToStart={() => setGameMode('start') } />
             }
         </>
     )
