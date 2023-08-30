@@ -12,4 +12,5 @@
 @font-face {
     font-family: "ARCADECLASSIC";
     src: url('./assets/fonts/arcadeclassicv2.ttf');
+    font-display: swap;
 }
