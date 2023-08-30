@@ -8,7 +8,7 @@ const Colophon = forwardRef(function Colophon(props, colophonRef) {
             <div className="flex h-full md:sticky md:h-screen md:top-0">
                 <Navigation changePanel={props.changePanel} activePanel={props.activePanel} />
                 <div className="m-auto px-8 py-16">
-                    <img className="rounded-full w-20 h-20 ring-2 ring-indigo-400" src="/src/assets/images/headshot_square_optimized.webp" alt="Headshot of Andrew" width="80" height="80" />
+                    <img className="rounded-full w-20 h-20 ring-2 ring-indigo-400" src="/headshot_square_optimized.webp" alt="Headshot of Andrew" width="80" height="80" />
                     <h1 className="mt-1 text-3xl font-extrabold text-slate-900 tracking-tight">
                         Andrew Church
                     </h1>
