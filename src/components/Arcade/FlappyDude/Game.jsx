@@ -7,9 +7,20 @@ const gameConfig = {
     'maxFps': 60, // throttles fps to keep consistent speed on higher refresh screens
     'debugFps': false, // if true, displays throttled fps and fps on screen
     'collisions': true, // set to false to disable collisions (when debugging)
+    'levels': {
+        'scoreThreshold': 7, // base number of scores per level needed to move to next
+        'scoreThresholdIncreasePerLevel': 1, // how many more scores per level needed
+        'speedIncrease': 0.0005, // obstacle speed increase per level
+        'colors': [ // color to change to per level
+            'bg-slate-500',
+            'bg-sky-900',
+            'bg-teal-900',
+            'bg-yellow-900',
+            'bg-red-900'
+        ],
+    },
     'obstacles': {
-        'initialSpeed': 0.004, // movement in board width per frame
-        'speedIncrease': 0.000001, // increase in speed per frame
+        'initialSpeed': 0.0045, // movement in board width per frame
 
         // NOTE: obstacleGap + (obstacleGapTreshold * 2) shouldn't be more than 1
         'obstacleGap': 0.25, // gap within obstacle in percentage of board height
@@ -32,6 +43,7 @@ const gameConfig = {
 export default function Game({endGame}) {
     
     const gameState = useRef({
+        'level': 1,
         'score': 0,
         'obstacles': {
             'speed': gameConfig.obstacles.initialSpeed,
@@ -54,6 +66,7 @@ export default function Game({endGame}) {
     const playerRef = useRef(null);
     const obstaclesRef = useRef([]);
     const scoreRef = useRef(null);
+    const levelRef = useRef(null);
     const frameCounterRef = useRef(null);
 
     // set up board -- this happens once on initial render AND every time the window is resized
@@ -121,6 +134,35 @@ export default function Game({endGame}) {
         return false;
     }
 
+    function detectUpdateLevel() {
+        
+        // threshold is current level * (threshold + level increase for this level)
+        const currentLevelScoreThreshold = 
+            gameState.current.level * 
+            (
+                gameConfig.levels.scoreThreshold + 
+                (gameState.current.level * gameConfig.levels.scoreThresholdIncreasePerLevel)
+            );
+
+        // level up!
+        if (gameState.current.score > currentLevelScoreThreshold) {
+
+            // change bg color
+            const oldLevelColor = gameConfig.levels.colors[gameState.current.level - 1];
+            const newLevelColor = gameConfig.levels.colors[gameState.current.level];
+            if (newLevelColor) {
+                gameBoardRef.current.classList.add(newLevelColor);
+                gameBoardRef.current.classList.remove(oldLevelColor);
+            }
+
+            // update speed
+            gameState.current.obstacles.speed = obstaclesAccelerate(gameState.current.obstacles, gameState.current.level, gameConfig.levels);
+
+            // update level counter
+            levelRef.current.innerHTML = ++gameState.current.level;
+        }
+    }
+
     function detectUpdateScore(obstacles) {
         obstacles.obstacles.forEach(function (obstacle, i) {
             
@@ -131,6 +173,7 @@ export default function Game({endGame}) {
                 if ((Math.abs(obstacle.pX) - obstacle.width) > gameState.current.board.rect.width / 2) {
                     obstacle.scored = true;
                     scoreRef.current.innerHTML = ++gameState.current.score;
+                    detectUpdateLevel();
                 }
             }
         });
@@ -162,7 +205,6 @@ export default function Game({endGame}) {
         gameState.current.player.pY = playerPosition(gameState.current.player, gameState.current.board);
 
         // accelerate and position obstacles
-        gameState.current.obstacles.speed = obstaclesAccelerate(gameState.current.obstacles, gameConfig.obstacles);
         gameState.current.obstacles = obstaclesPosition(gameState.current.obstacles, gameConfig.obstacles, gameState.current.board);
 
         if (gameConfig.collisions && detectCollision()) {
@@ -227,9 +269,10 @@ export default function Game({endGame}) {
     }
 
     return (
-        <div ref={gameBoardRef} onClick={handleBoardClick} className="w-full h-full relative flex cursor-pointer">
-            <div className="absolute top-2 left-4 px-4 py-2 bg-slate-500 text-lg font-arcade z-10">
-                Score: <span ref={scoreRef}>0</span>
+        <div ref={gameBoardRef} onClick={handleBoardClick} className="w-full h-full relative flex cursor-pointer transition-colors">
+            <div className="absolute top-2 left-2 px-4 py-2 bg-slate-500 font-arcade flex gap-2 z-10">
+                <p>Level: <span ref={levelRef}>1</span></p>
+                <p>Score: <span ref={scoreRef}>0</span></p>
             </div>
             <Player ref={playerRef} />
             {obstacleComponents}

@@ -1,4 +1,4 @@
-import FlappyDude from '../FlappyDude/FlappyDude';
+import FlappyDude from './FlappyDude/FlappyDude';
 
 export default function Arcade({overflowContainerRef}) {
 

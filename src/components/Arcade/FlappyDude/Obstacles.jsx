@@ -38,8 +38,8 @@ export function obstacleUpdateHeight(obstacle, obstaclesConfig, board) {
     };
 }
 
-export function obstaclesAccelerate(obstacles, obstaclesConfig) {
-    return obstacles.speed += obstaclesConfig.speedIncrease;
+export function obstaclesAccelerate(obstacles, level, levelConfig) {
+    return obstacles.speed += levelConfig.speedIncrease;
 }
 
 export function obstaclesPosition(obstacles, obstaclesConfig, board) {
