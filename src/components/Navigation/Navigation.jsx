@@ -4,7 +4,7 @@ function NavItem({changePanel, props}) {
         'listItem': [].concat(props.listItemClasses),
         'button': [
             'flex', 'gap-x-1', 'items-center', 'rounded-md', 'bg-indigo-600', 'hover:bg-indigo-400', 'px-3', 'py-1.5', 'text-xs', 'font-semibold', 'leading-6', 'text-white', 'shadow-sm'].concat(props.buttonClasses),
-        'arrow': ['inline, w-6, h-6'].concat(props.arrowClasses),
+        'arrow': ['inline'].concat(props.arrowClasses),
         'text': [].concat(props.textClasses)
     };
 
@@ -27,13 +27,13 @@ export default function Navigation({changePanel, activePanel}) {
             'panel': 'portfolio',
             'text': 'Work',
             'listItemClasses': 'hidden md:inline-block ml-auto',
-            'arrowClasses': 'rotate-180',
+            'arrowClasses': 'w-6 h-6 rotate-180',
             'textClasses': 'order-first'
         }, {
             'panel': 'arcade',
             'text': 'Fun',
             'listItemClasses': 'ml-auto md:ml-0',
-            'arrowClasses': 'hidden md:inline-block'
+            'arrowClasses': 'rotate-90 w-4 h-4 md:rotate-0 md:h-6 md:w-6'
         }
     ];
 
