@@ -35,13 +35,17 @@ export function playerPosition(player, board) {
     // if player moves below bottom of board, move them to top
     if (playerYPosition > (boardHeight / 2)) {
         playerYPosition = boardHeight - (boardHeight + (boardHeight / 2));
+        player.looped = true;
     
     // player moves above top, move them to bottom
     } else if (playerYPosition < boardHeight - (boardHeight + (boardHeight / 2))) {
         playerYPosition = boardHeight / 2;
+        player.looped = true;
     }
 
-    return playerYPosition;
+    player.pY = playerYPosition;
+
+    return player;
 }
 
 export const Player = forwardRef(function Player(props, ref) {
