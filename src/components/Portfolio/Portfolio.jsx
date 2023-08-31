@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { getAllProjects } from './services/data.mjs'
-import { loginUser } from './services/auth.mjs';
+import { getAllProjects } from '../../services/data.mjs'
+import { loginUser } from '../../services/auth.mjs';
 
 function PortfolioListItem(props) {
     const { project } = props;
@@ -137,12 +137,14 @@ export default function Portfolio() {
     const [isLoggedIn, setLoggedIn] = useState(false);
 
     return (
-        <div className="w-full my-auto max-w-xl md:m-auto">
-            { isLoggedIn ? 
-                <PortfolioList />
-                :
-                <PortfolioAuthentication onLogin={() => setLoggedIn(true)} />
-            }
+        <div className="bg-gray-100 flex order-last md:min-h-screen">
+            <div className="w-full my-auto max-w-xl md:m-auto">
+                { isLoggedIn ? 
+                    <PortfolioList />
+                    :
+                    <PortfolioAuthentication onLogin={() => setLoggedIn(true)} />
+                }
+            </div>
         </div>
     )
 }

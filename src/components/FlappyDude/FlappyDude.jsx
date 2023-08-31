@@ -3,14 +3,17 @@ import StartScreen from './Start';
 import Game from './Game';
 import GameOverScreen from './GameOver';
 
-export default function FlappyDude() {
+export default function FlappyDude({overflowContainerRef}) {
     const [gameMode, setGameMode] = useState('start');
     const [score, setScore] = useState(0);
 
     return (
         <>
             {gameMode === 'start' && 
-                <StartScreen startGame={() => setGameMode('playing') } />
+                <StartScreen startGame={() => {
+                    overflowContainerRef.current.scrollTo(0, 0);
+                    setGameMode('playing');
+                }} />
             }
             {gameMode === 'playing' && 
                 <Game endGame={(score) => {

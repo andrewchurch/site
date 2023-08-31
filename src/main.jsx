@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Navigation from './Navigation.jsx';
-import NavigationMobile from './NavigationMobile.jsx';
-import Arcade from './Arcade.jsx';
-import Portfolio from './Portfolio.jsx';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import Home from './routes/Home.jsx';
 import './index.css';
 
-ReactDOM.createRoot(document.getElementById('arcade')).render(<Arcade />);
-ReactDOM.createRoot(document.getElementById('portfolio')).render(<Portfolio />);
-ReactDOM.createRoot(document.getElementById('navigationMobile')).render(<NavigationMobile />);
-ReactDOM.createRoot(document.getElementById('navigation')).render(<Navigation />);
+ReactDOM.createRoot(document.getElementById('root')).render(
+    <BrowserRouter>
+        <Routes>
+            <Route path="*" element={<Home />} />
+        </Routes>
+    </BrowserRouter>
+);
