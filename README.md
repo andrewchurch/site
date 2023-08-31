@@ -1,4 +1,4 @@
-Personal website and professional portfolio of Andrew Church.
+# Personal website and professional portfolio of Andrew Church
 
 * [React](https://react.dev/) / [Tailwind](https://tailwindcss.com/) UI
 * Firebase [Firestore](https://firebase.google.com/) DB
