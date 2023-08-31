@@ -1,5 +1,6 @@
-import { useState,useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import debounce from 'lodash.debounce';
 import Colophon from '../components/Colophon/Colophon.jsx';
 import Arcade from '../components/Arcade/Arcade.jsx';
 import Portfolio from '../components/Portfolio/Portfolio.jsx';
@@ -19,15 +20,6 @@ export default function Home() {
     const activePanel = availablePanels.includes(searchParams.get('p')) ? searchParams.get('p') : defaultPanel;
     const overflowClasses = activePanel === 'arcade' ? ['md:overflow-hidden'] : [];
     const containerClasses = activePanel === 'portfolio' ? ['md:-translate-x-1/3'] : [];
-
-    function handleScroll() {
-
-        // when bottom of colophon is off the screen, we're mostly looking at first panel
-        if (!isScrolling.current) {
-            const colophonRect = colophonRef.current.getBoundingClientRect();
-            changePanel(colophonRect.height + colophonRect.y > window.innerHeight ? 'arcade' : 'portfolio', false);
-        }
-    }
 
     function changePanel(panel, scroll) {
 
@@ -65,21 +57,31 @@ export default function Home() {
         }
     }
 
-    function setIsMobile() {
-        isMobile.current = window.innerWidth <= mobileWindowWidth;
+    function handleScroll() {
+
+        // when bottom of colophon is off the screen, we're mostly looking at first panel
+        if (!isScrolling.current) {
+            const colophonRect = colophonRef.current.getBoundingClientRect();
+            changePanel((colophonRect.y + 50) > window.innerHeight ? 'arcade' : 'portfolio', false);
+        }
     }
 
-    function setupScrollHandling() {
+    const throttledHandleScroll = debounce(() => {
+        handleScroll();
+    }, 50);
+
+    function responsiveSetup() {
+        isMobile.current = window.innerWidth <= mobileWindowWidth;
         if (isMobile.current) {
-            overflowContainerRef.current.addEventListener('scroll', handleScroll);
+            overflowContainerRef.current.addEventListener('scroll', throttledHandleScroll);
         } else {
-            overflowContainerRef.current.removeEventListener('scroll', handleScroll);
+            overflowContainerRef.current.removeEventListener('scroll', throttledHandleScroll);
         }
     }
 
     useEffect(() => {
-        window.addEventListener('resize', setIsMobile); 
-        setIsMobile();
+        window.addEventListener('resize', responsiveSetup); 
+        responsiveSetup();
 
         // on mobile if default panel is active scroll to it
         if (isMobile.current && activePanel === defaultPanel) {
@@ -88,13 +90,7 @@ export default function Home() {
             });
         }
 
-        window.addEventListener('resize', setupScrollHandling); 
-        setupScrollHandling();
-
-        return () => {
-            window.removeEventListener('resize', setIsMobile);
-            window.removeEventListener('resize', setupScrollHandling);
-        }
+        return () => window.removeEventListener('resize', responsiveSetup);
     }, []);
 
     return (

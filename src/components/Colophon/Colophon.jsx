@@ -4,7 +4,7 @@ import Navigation from '../Navigation/Navigation.jsx';
 const Colophon = forwardRef(function Colophon(props, colophonRef) {
 
     return (
-        <div ref={colophonRef} tabIndex="0" className="bg-white relative snap-start md:snap-align-none">
+        <div ref={colophonRef} tabIndex="0" className="bg-white relative">
             <div className="flex h-full md:sticky md:h-screen md:top-0">
                 <Navigation changePanel={props.changePanel} activePanel={props.activePanel} />
                 <div className="m-auto px-8 py-16">
