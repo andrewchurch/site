@@ -20,7 +20,7 @@ const gameConfig = {
         ],
     },
     'obstacles': {
-        'initialSpeed': 0.0045, // movement in board width per frame
+        'initialSpeed': 0.0040, // movement in board width per frame
 
         // NOTE: obstacleGap + (obstacleGapTreshold * 2) shouldn't be more than 1
         'obstacleGap': 0.25, // gap within obstacle in percentage of board height
@@ -36,7 +36,8 @@ const gameConfig = {
         'initialSpeed': 0, // movement in percentage of board height per frame
         'maxSpeed': 0.0125, // movement in percentage of board height per frame 
         'gravity': 0.00025, // decrease in speed per frame
-        'flapSpeed': 0.0110 // increase in speed when flapping
+        'flapSpeed': 0.0110, // increase in speed when flapping
+        'loopScoreBonus': 3 // bonus scoring when player loops
     },
 };
 
@@ -51,7 +52,8 @@ export default function Game({endGame}) {
         },
         'player': {
             'speed': gameConfig.player.initialSpeed,
-            'pY': 0
+            'pY': 0,
+            'looped': false
         }
     });
 
@@ -67,6 +69,7 @@ export default function Game({endGame}) {
     const obstaclesRef = useRef([]);
     const scoreRef = useRef(null);
     const levelRef = useRef(null);
+    const messageRef = useRef(null);
     const frameCounterRef = useRef(null);
 
     // set up board -- this happens once on initial render AND every time the window is resized
@@ -96,6 +99,19 @@ export default function Game({endGame}) {
             obstacleRef.style.width = gameState.current.obstacles.obstacles[i].width + 'px';
             gameState.current.obstacles.obstacles[i].height = obstacleUpdateHeight(gameState.current.obstacles.obstacles[i], gameConfig.obstacles, gameState.current.board);
         });
+    }
+
+    let timeoutId;
+    function showMessage(message) {
+        clearTimeout(timeoutId);
+        messageRef.current.innerHTML = message;
+        messageRef.current.classList.remove('hidden');
+        timeoutId = setTimeout(() => {
+            if (messageRef.current) {
+                messageRef.current.classList.add('hidden');
+                messageRef.current.innerHTML = '';
+            }
+        }, 2000);
     }
 
     function detectCollision() {
@@ -155,6 +171,8 @@ export default function Game({endGame}) {
                 gameBoardRef.current.classList.remove(oldLevelColor);
             }
 
+            showMessage('Level Up!');
+
             // update speed
             gameState.current.obstacles.speed = obstaclesAccelerate(gameState.current.obstacles, gameState.current.level, gameConfig.levels);
 
@@ -163,16 +181,27 @@ export default function Game({endGame}) {
         }
     }
 
-    function detectUpdateScore(obstacles) {
-        obstacles.obstacles.forEach(function (obstacle, i) {
+    function detectUpdateScore() {
+        gameState.current.obstacles.obstacles.forEach(function (obstacle, i) {
             
             // if we haven't already scored with this obstacle
             if (!obstacle.scored) {
 
                 // then check to see if it's past the midway point of board
+                // if it has, then the player scored
                 if ((Math.abs(obstacle.pX) - obstacle.width) > gameState.current.board.rect.width / 2) {
                     obstacle.scored = true;
-                    scoreRef.current.innerHTML = ++gameState.current.score;
+
+                    // check if player looped if so it's bonus points
+                    let newScore = gameState.current.score + 1;
+                    if (gameState.current.player.looped) {
+                        newScore = gameState.current.score + gameConfig.player.loopScoreBonus;
+                        showMessage(`Looped! +${gameConfig.player.loopScoreBonus} Points.`);
+                        gameState.current.player.looped = false;
+                    }
+                    gameState.current.score = newScore;
+                    scoreRef.current.innerHTML = gameState.current.score;
+
                     detectUpdateLevel();
                 }
             }
@@ -186,12 +215,11 @@ export default function Game({endGame}) {
         // do this again ASAP
         frame.current = requestAnimationFrame(tick);
 
-        const msPerFrame = 1000 / gameConfig.maxFps;
-        const msElapsed = newtime - msPrev.current;
-
         // throttle fps
         // https://stackoverflow.com/questions/19764018/controlling-fps-with-requestanimationframe
         // https://chriscourses.com/blog/standardize-your-javascript-games-framerate-for-different-monitors
+        const msPerFrame = 1000 / gameConfig.maxFps;
+        const msElapsed = newtime - msPrev.current;
         if (msElapsed > msPerFrame) {
             msPrev.current = newtime - (msElapsed % msPerFrame);
         } else {
@@ -202,7 +230,7 @@ export default function Game({endGame}) {
 
         // accelerate and position player
         gameState.current.player.speed = playerApplyGravity(gameState.current.player, gameConfig.player);
-        gameState.current.player.pY = playerPosition(gameState.current.player, gameState.current.board);
+        gameState.current.player = playerPosition(gameState.current.player, gameState.current.board);
 
         // accelerate and position obstacles
         gameState.current.obstacles = obstaclesPosition(gameState.current.obstacles, gameConfig.obstacles, gameState.current.board);
@@ -211,7 +239,7 @@ export default function Game({endGame}) {
             endGame(gameState.current.score);
         }
 
-        detectUpdateScore(gameState.current.obstacles);
+        detectUpdateScore();
 
         draw();
     }
@@ -276,6 +304,7 @@ export default function Game({endGame}) {
             </div>
             <Player ref={playerRef} />
             {obstacleComponents}
+            <div ref={messageRef} className="hidden absolute bottom-2 left-2 px-4 py-2 bg-slate-500 font-arcade flex gap-2 z-10"></div>
             {gameConfig.debugFps && 
                 <div ref={frameCounterRef} className="absolute bottom-0 right-0 bg-black text-xs"></div>
             }
