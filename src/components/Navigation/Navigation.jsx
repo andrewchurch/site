@@ -33,7 +33,7 @@ export default function Navigation({changePanel, activePanel}) {
             'panel': 'arcade',
             'text': 'Fun',
             'listItemClasses': 'ml-auto md:ml-0',
-            'arrowClasses': 'rotate-90 md:rotate-0'
+            'arrowClasses': 'hidden md:inline-block'
         }
     ];
 
