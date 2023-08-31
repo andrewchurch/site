@@ -98,7 +98,7 @@ export default function Home() {
             <div className={`${containerClasses} md:transition-transform grid grid-rows-[minmax(100%,auto),repeat(2,minmax(50%,auto))] h-screen md:h-auto md:min-h-screen md:grid-rows-none md:grid-cols-3 md:w-[150%]`}>
                 <Colophon ref={colophonRef} changePanel={ (panel) => changePanel(panel, true) } activePanel={activePanel} />
                 <Portfolio />
-                <Arcade />
+                <Arcade overflowContainerRef={overflowContainerRef} />
             </div>
         </div>
     );

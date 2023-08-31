@@ -223,9 +223,7 @@ export default function Game({endGame}) {
 
     let obstacleComponents = [];
     for (let i = 0; i < gameConfig.obstacles.number; i++) {
-        obstacleComponents.push(
-            <Obstacle key={i} ref={(element) => obstaclesRef.current.push(element)} />
-        );
+        obstacleComponents[i] = <Obstacle key={i} ref={(element) => obstaclesRef.current[i] = element} />;
     }
 
     return (
