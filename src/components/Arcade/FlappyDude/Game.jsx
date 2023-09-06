@@ -104,12 +104,12 @@ export default function Game({endGame}) {
     let timeoutId;
     function showMessage(message) {
         clearTimeout(timeoutId);
-        messageRef.current.innerHTML = message;
+        messageRef.current.textContent = message;
         messageRef.current.classList.remove('hidden');
         timeoutId = setTimeout(() => {
             if (messageRef.current) {
                 messageRef.current.classList.add('hidden');
-                messageRef.current.innerHTML = '';
+                messageRef.current.textContent = '';
             }
         }, 2000);
     }
@@ -177,7 +177,7 @@ export default function Game({endGame}) {
             gameState.current.obstacles.speed = obstaclesAccelerate(gameState.current.obstacles, gameState.current.level, gameConfig.levels);
 
             // update level counter
-            levelRef.current.innerHTML = ++gameState.current.level;
+            levelRef.current.textContent = ++gameState.current.level;
         }
     }
 
@@ -200,7 +200,7 @@ export default function Game({endGame}) {
                         gameState.current.player.looped = false;
                     }
                     gameState.current.score = newScore;
-                    scoreRef.current.innerHTML = gameState.current.score;
+                    scoreRef.current.textContent = gameState.current.score;
 
                     detectUpdateLevel();
                 }
@@ -263,7 +263,7 @@ export default function Game({endGame}) {
     }
 
     function logFrames() {
-        frameCounterRef.current.innerHTML = fpsCountThrottled.current + ' / ' + fpsCount.current;
+        frameCounterRef.current.textContent = fpsCountThrottled.current + ' / ' + fpsCount.current;
         fpsCount.current = 0;
         fpsCountThrottled.current = 0;
     }
