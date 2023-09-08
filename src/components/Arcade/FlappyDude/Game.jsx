@@ -268,13 +268,22 @@ export default function Game({endGame}) {
         fpsCountThrottled.current = 0;
     }
 
-    function handleBoardClick() {
+    const keyboardControls = [
+        32 // space
+    ];
+    function handleKeyboardInput(event) {
+        keyboardControls.includes(event.keyCode) && handleUserControl();
+    }
+
+    function handleUserControl() {
         gameState.current.player.speed = playerFlap(gameState.current.player, playerRef.current, gameConfig.player);
     }
 
     useEffect(() => {       
         window.addEventListener('resize', boardSetup); 
         boardSetup();
+
+        window.addEventListener('keydown', handleKeyboardInput);
 
         // tick with throttled RAF
         frame.current = requestAnimationFrame(tick);
@@ -286,6 +295,7 @@ export default function Game({endGame}) {
 
         return () => {
             window.removeEventListener('resize', boardSetup);
+            window.removeEventListener('keydown', handleKeyboardInput);
             cancelAnimationFrame(frame.current);
             clearInterval(frameLogInterval);
         }
@@ -297,7 +307,7 @@ export default function Game({endGame}) {
     }
 
     return (
-        <div ref={gameBoardRef} onClick={handleBoardClick} className="w-full h-full relative flex cursor-pointer transition-colors">
+        <div ref={gameBoardRef} onMouseDown={handleUserControl} className="w-full h-full relative flex cursor-pointer transition-colors">
             <div className="absolute top-2 left-2 px-4 py-2 bg-slate-500 font-arcade flex gap-2 z-10">
                 <p>Level: <span ref={levelRef}>1</span></p>
                 <p>Score: <span ref={scoreRef}>0</span></p>
